@@ -8,10 +8,6 @@ export default function Component() {
                 <Label>Tên dự án</Label>
                 <Input placeholder="Coming back with NYC"/>
             </div>
-            <div className="space-y-2">
-                <Label>Mô tả về dự án</Label>
-                <Textarea placeholder="Dự án này thực sự rất đáng chú ý mà..."/>
-            </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                     <Label>Vai trò</Label>
