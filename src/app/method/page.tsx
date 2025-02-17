@@ -4,17 +4,22 @@ import {Button} from "@/components/ui/button";
 import {Badge} from "@/components/ui/badge";
 import axios from "axios";
 import {ScrollArea} from "@/components/ui/scroll-area";
-import {useRouter, usePathname} from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
 import useAuthStore from "@/lib/store/user.modal";
 
 export default function Component() {
     const [methods, getAllMethods] = useState<string[]>([]);
     const router = useRouter();
-    const {token, getTokenFromLocalStorage} = useAuthStore();
-    const pathname = usePathname()
+    const {token, getTokenFromLocalStorage, setToken} = useAuthStore();
+
+    useEffect(() => {
+        const searchParam = useSearchParams()
+        const tokenParam = searchParam.get("accessToken");
+        setToken(tokenParam || "")
+    }, [useSearchParams, setToken]);
+
     useEffect(() => {
         getTokenFromLocalStorage();
-        console.log(pathname);
     }, []);
 
     const handleGetAllMethods = () => {
@@ -29,7 +34,9 @@ export default function Component() {
         <div className="h-screen flex justify-center items-center flex-col">
             <div className="space-x-4">
                 <Button onClick={handleGetAllMethods} className="w-fit">Get All Available Methods</Button>
-                <Button variant="info" onClick={() => {router.push("/contact")}} className="w-fit">Go to Contact</Button>
+                <Button variant="info" onClick={() => {
+                    router.push("/contact")
+                }} className="w-fit">Go to Contact</Button>
             </div>
 
             <div className="space-y-4 w-4/5 h-[80%] mt-10 p-6 rounded-md mx-auto shadow border">
