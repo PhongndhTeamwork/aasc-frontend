@@ -45,7 +45,7 @@ export default function Component() {
                 <ScrollArea className="h-full px-4">
                     <div className="grid grid-cols-3 gap-3 mt-5">
                         {
-                            methods.map((method, index) => (
+                            methods?.map((method, index) => (
                                 <Badge key={index} variant="outline">{method}</Badge>
                             ))
                         }
