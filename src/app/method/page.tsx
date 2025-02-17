@@ -25,7 +25,7 @@ export default function Component() {
     }, []);
 
     const handleGetAllMethods = () => {
-        console.log("GET");
+        console.log(process.env.NEXT_PUBLIC_PREFIX_API);
         axios.get(`${process.env.NEXT_PUBLIC_PREFIX_API}/bitrix/methods?accessToken=${token}`).then(({data}) => {
             console.log(data);
             getAllMethods(data.data);
