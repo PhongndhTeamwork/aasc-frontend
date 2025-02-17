@@ -24,13 +24,19 @@ export default function Component() {
         getTokenFromLocalStorage();
     }, []);
 
-    const handleGetAllMethods = () => {
-        axios.get(`${process.env.NEXT_PUBLIC_PREFIX_API}/bitrix/methods?accessToken=${token}`).then((data) => {
-            console.log(data);
-            getAllMethods(data.data);
-        }).catch((e) => {
-            console.error(e);
-        })
+    const handleGetAllMethods = async () => {
+        console.log("GET");
+        try {
+            console.log(process.env.NEXT_PUBLIC_PREFIX_API);
+            console.log(token);
+
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_PREFIX_API}/bitrix/methods?accessToken=${token}`);
+
+            console.log(response.data);
+
+        } catch (error) {
+            // Handle errors here
+        }
     }
     return (
         <div className="h-screen flex justify-center items-center flex-col">
