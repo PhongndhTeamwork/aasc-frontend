@@ -10,7 +10,7 @@ import useAuthStore from "@/lib/store/user.modal";
 
 
 export default function Component() {
-    const [methods, getAllMethods] = useState<string[]>([]);
+    const [methods, setAllMethods] = useState<string[]>([]);
     const router = useRouter();
     const {token, getTokenFromLocalStorage, setToken} = useAuthStore();
     const searchParam = useSearchParams()
@@ -24,19 +24,14 @@ export default function Component() {
         getTokenFromLocalStorage();
     }, []);
 
-    const handleGetAllMethods = async () => {
+    const handleGetAllMethods = () => {
         console.log("GET");
-        try {
-            console.log(process.env.NEXT_PUBLIC_PREFIX_API);
-            console.log(token);
-
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_PREFIX_API}/bitrix/methods?accessToken=${token}`);
-
-            console.log(response.data);
-
-        } catch (error) {
-            // Handle errors here
-        }
+        axios.get(`${process.env.NEXT_PUBLIC_PREFIX_API}/bitrix/methods?accessToken=${token}`).then(({data}) => {
+            console.log(data.data.data);
+            setAllMethods(data.data.data);
+        }).catch((e) => {
+            console.error(e);
+        })
     }
     return (
         <div className="h-screen flex justify-center items-center flex-col">
