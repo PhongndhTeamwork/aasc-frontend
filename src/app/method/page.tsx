@@ -7,16 +7,17 @@ import {ScrollArea} from "@/components/ui/scroll-area";
 import {useRouter, useSearchParams} from "next/navigation";
 import useAuthStore from "@/lib/store/user.modal";
 
+
+
 export default function Component() {
     const [methods, getAllMethods] = useState<string[]>([]);
     const router = useRouter();
     const {token, getTokenFromLocalStorage, setToken} = useAuthStore();
-
+    const searchParam = useSearchParams()
     useEffect(() => {
-        const searchParam = useSearchParams()
         const tokenParam = searchParam.get("accessToken");
         setToken(tokenParam || "")
-    }, [useSearchParams, setToken]);
+    }, [searchParam, setToken]);
 
     useEffect(() => {
         getTokenFromLocalStorage();
@@ -51,6 +52,5 @@ export default function Component() {
                 </ScrollArea>
             </div>
         </div>
-
     )
 }
