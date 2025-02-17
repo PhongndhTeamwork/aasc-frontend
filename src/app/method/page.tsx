@@ -8,7 +8,6 @@ import {useRouter, useSearchParams} from "next/navigation";
 import useAuthStore from "@/lib/store/user.modal";
 
 
-
 export default function Component() {
     const [methods, setAllMethods] = useState<string[]>([]);
     const router = useRouter();
@@ -27,8 +26,11 @@ export default function Component() {
     const handleGetAllMethods = () => {
         console.log("GET");
         axios.get(`${process.env.NEXT_PUBLIC_PREFIX_API}/bitrix/methods?accessToken=${token}`).then(({data}) => {
-            console.log(data.data);
-            setAllMethods(data.data);
+            console.log(data.data.methods);
+            setAllMethods(data?.data?.methods);
+            if (data?.data?.accessToken) {
+                setToken(data?.data?.accessToken || "")
+            }
         }).catch((e) => {
             console.error(e);
         })

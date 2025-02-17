@@ -41,10 +41,15 @@ export default function Component() {
     const [formData, setFormData] = useState<ContactInfo>({})
     const [bankAccountFormData, setBankAccountFormData] = useState<BankInfo>({})
     const [contacts, setContacts] = useState<ContactInfo[]>([])
+    const {token, getTokenFromLocalStorage, setToken} = useAuthStore();
+
+    useEffect(() => {
+        getTokenFromLocalStorage();
+    }, []);
 
     const getContacts = useCallback(() => {
         axios.get(`${process.env.NEXT_PUBLIC_PREFIX_API}/bitrix/contact?accessToken=${token}`).then(({data}) => {
-            setContacts(data.data.map((contact: any) => ({
+            setContacts(data.data?.contacts?.map((contact: any) => ({
                 id: contact.ID,
                 name: contact.NAME,
                 address: contact.ADDRESS,
@@ -52,14 +57,15 @@ export default function Component() {
                 email: contact.EMAIL?.[0]?.VALUE,
                 website: contact.WORK_WEBSITE?.[0]?.VALUE,
             })));
+            if (data?.data?.accessToken) {
+                setToken(data?.data?.accessToken || "")
+            }
         }).catch((e) => {
             console.error(e);
         })
     },[])
     const [message, setMessage] = useState<MessagePayloadForm>({content: ""});
     const [triggerNotice, setTriggerNotice] = useState<boolean>(false);
-
-    const {token, getTokenFromLocalStorage} = useAuthStore();
 
     useEffect(() => {
         getTokenFromLocalStorage();
@@ -72,7 +78,7 @@ export default function Component() {
     }, [getContacts]);
 
     const handleContactSubmit = () => {
-        axios.post(`${process.env.NEXT_PUBLIC_PREFIX_API}/bitrix/contact?accessToken=${token}`, {...formData}).then(response => {
+        axios.post(`${process.env.NEXT_PUBLIC_PREFIX_API}/bitrix/contact?accessToken=${token}`, {...formData}).then(({data}) => {
             setFormData({
                 name : "",
                 address : "",
@@ -80,22 +86,27 @@ export default function Component() {
                 email : "",
                 website : "",
             })
+            if (data?.data?.accessToken) {
+                setToken(data?.data?.accessToken || "")
+            }
             setMessage({content : "Create Contact Successfully", type : "success"})
             setTriggerNotice(!triggerNotice)
             getContacts()
         }).catch(error => {
             console.error(error)
         })
-
     }
 
     const handleBankAccountSubmit = () => {
-        axios.post(`${process.env.NEXT_PUBLIC_PREFIX_API}/bitrix/bank-info/${bankAccountFormData.contactId}?accessToken=${token}`, {...bankAccountFormData}).then(response => {
+        axios.post(`${process.env.NEXT_PUBLIC_PREFIX_API}/bitrix/bank-info/${bankAccountFormData.contactId}?accessToken=${token}`, {...bankAccountFormData}).then(({data}) => {
             setBankAccountFormData({
                 contactId : undefined,
                 bankName : "",
                 bankAccount : "",
             })
+            if (data?.data?.accessToken) {
+                setToken(data?.data?.accessToken || "")
+            }
             setMessage({content : "Create Bank Information Successfully", type : "success"})
             setTriggerNotice(!triggerNotice)
         }).catch(error => {
@@ -109,7 +120,6 @@ export default function Component() {
             <Button variant="info" onClick={() => {
                 router.push("/method")
             }} className="w-fit">Go to Method</Button>
-
             <div className="space-y-10 w-full">
                 <div className="space-y-4">
                     <div className="space-y-2">
