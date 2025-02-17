@@ -59,15 +59,16 @@ export default function Component() {
     const [triggerNotice, setTriggerNotice] = useState<boolean>(false);
 
     const {token, getTokenFromLocalStorage} = useAuthStore();
+
     useEffect(() => {
         getTokenFromLocalStorage();
-    }, []);
+    }, [getTokenFromLocalStorage]);
 
     ToastInitialisation({triggerMessage : triggerNotice, message : message})
 
     useEffect(() => {
         getContacts()
-    }, []);
+    }, [getContacts]);
 
     const handleContactSubmit = () => {
         axios.post(`${process.env.NEXT_PUBLIC_PREFIX_API}/bitrix/contact?accessToken=${token}`, {...formData}).then(response => {
