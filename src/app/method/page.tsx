@@ -16,6 +16,7 @@ export default function Component() {
     const searchParam = useSearchParams()
     useEffect(() => {
         const tokenParam = searchParam.get("accessToken");
+        console.log(tokenParam)
         setToken(tokenParam || "")
     }, [searchParam, setToken]);
 
