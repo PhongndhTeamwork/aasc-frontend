@@ -18,6 +18,7 @@ import axios from "axios";
 import {MessagePayloadForm} from "@/lib/types/toast.type";
 import ToastInitialisation from "@/lib/preprocessors/toast-initialisation";
 import useAuthStore from "@/lib/store/user.modal";
+import {Toaster} from "react-hot-toast";
 
 type ContactInfo = {
     id?: number;
@@ -104,6 +105,7 @@ export default function Component() {
 
     return (
         <div className="space-y-6 w-2/3 mt-10 p-6 rounded-md mx-auto shadow border flex flex-col items-center">
+            <Toaster position="bottom-center"/>
             <Button variant="info" onClick={() => {
                 router.push("/method")
             }} className="w-fit">Go to Method</Button>
