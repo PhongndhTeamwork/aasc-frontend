@@ -4,15 +4,17 @@ import {Button} from "@/components/ui/button";
 import {Badge} from "@/components/ui/badge";
 import axios from "axios";
 import {ScrollArea} from "@/components/ui/scroll-area";
-import {useRouter} from "next/navigation";
+import {useRouter, usePathname} from "next/navigation";
 import useAuthStore from "@/lib/store/user.modal";
 
 export default function Component() {
     const [methods, getAllMethods] = useState<string[]>([]);
     const router = useRouter();
     const {token, getTokenFromLocalStorage} = useAuthStore();
+    const pathname = usePathname()
     useEffect(() => {
         getTokenFromLocalStorage();
+        console.log(pathname);
     }, []);
 
     const handleGetAllMethods = () => {
