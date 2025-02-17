@@ -24,15 +24,23 @@ export default function Component() {
         getTokenFromLocalStorage();
     }, []);
 
-    const handleGetAllMethods = () => {
-        console.log(process.env.NEXT_PUBLIC_PREFIX_API);
-        console.log(token);
-        axios.get(`https://48da-2405-4802-2448-9ad0-a187-ae03-3d56-6110.ngrok-free.app/api/bitrix/methods?accessToken=f138b367007601af0075ddb500000001403807788b8b88d1ba6955c2cedd0c6a1c4139`).then((data) => {
-            console.log(data);
-            // getAllMethods(data.data);
-        }).catch((e) => {
-            console.error(e);
-        })
+    const handleGetAllMethods = async () => {
+        try {
+            console.log(process.env.NEXT_PUBLIC_PREFIX_API);
+            console.log(token);
+
+            // Making the API call
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_PREFIX_API}/bitrix/methods?accessToken=${token}`);
+
+            // Log the response data
+            console.log(response.data);
+            // Uncomment to process the methods if needed
+            // getAllMethods(response.data);
+
+        } catch (error) {
+            // Handle errors here
+
+        }
     }
     return (
         <div className="h-screen flex justify-center items-center flex-col">
